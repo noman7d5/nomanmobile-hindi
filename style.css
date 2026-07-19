@@ -736,7 +736,7 @@ html[dir="rtl"] .cd-sep{ transform:translateY(-4px); }
 }
 
 @media (max-width: 720px){
-  .header-wrap{ flex-wrap:wrap; gap: 0px; }
+  .header-wrap{ flex-wrap:wrap; }
   .brand{ order:0; }
   .menu-toggle{ display:flex; order:1; }
 
