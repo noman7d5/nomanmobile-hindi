@@ -520,7 +520,7 @@ html[dir="rtl"] .cd-sep{ transform:translateY(-4px); }
 .footer-wrap{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:28px; }
 .footer-brand p{ margin-top:6px; color:var(--muted); font-size:0.88rem; }
 .footer-brand .brand-name{ display:block; }
-.footer-brand .brand-sub{ display:block; margin-top:2px; }
+.footer-brand .brand-sub{ display:block; margin-top:2px; margin-bottom: 20px;}
 .footer-brand a{ color:var(--muted); }
 .footer-brand a:hover{ color:var(--teal); }
 
