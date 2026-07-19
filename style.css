@@ -191,9 +191,10 @@ button{ font-family:inherit; }
   backdrop-filter:var(--blur-lg);
   -webkit-backdrop-filter:var(--blur-lg);
   border-bottom:1px solid var(--glass-border);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,0.08), 0 12px 32px -18px rgba(0,0,0,0.6);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.08);
 }
 .header-wrap{
+  position:relative; /* anchors the mobile dropdown below, at all widths */
   display:flex;
   align-items:center;
   gap:24px;
@@ -736,40 +737,42 @@ html[dir="rtl"] .cd-sep{ transform:translateY(-4px); }
 }
 
 @media (max-width: 720px){
-  header{
-    padding-top: 14px;
-  }
-  .header-wrap{ flex-wrap:wrap; }
-  .brand{ order:0; }
-  .menu-toggle{ display:flex; order:1; }
+  .menu-toggle{ display:flex; }
 
+  /* The dropdown itself carries its own background + blur, so it can
+     never render without one — and being position:absolute, it never
+     forces .header-wrap (or the header's painted background) to grow. */
   .nav-panel{
-    order:2;
-    flex-basis:100%;
-    width:100%;
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
     display:flex;
     flex-direction:column;
     align-items:stretch;
     gap:16px;
+    padding:0 24px;
     max-height:0;
     opacity:0;
     overflow:hidden;
-    transform:translateY(-6px);
-    margin-top:0;
-    transition:max-height 0.35s ease, opacity 0.25s ease, transform 0.3s ease, margin-top 0.3s ease;
+    background:rgba(6,11,20,0.97);
+    backdrop-filter:var(--blur-lg);
+    -webkit-backdrop-filter:var(--blur-lg);
+    border-bottom:1px solid var(--glass-border);
+    box-shadow:0 24px 48px -20px rgba(0,0,0,0.6);
+    transition:max-height 0.35s ease, opacity 0.25s ease, padding 0.3s ease;
   }
-  .main-nav{ flex-direction:column; gap:4px; }
+  .main-nav{ flex-direction:column; gap:4px; margin-top:20px; }
   .main-nav a{ padding:10px 2px; border-bottom:1px solid var(--glass-border); }
   .main-nav a:last-child{ border-bottom:none; }
-  .nav-panel .nav-cta{ width:100%; }
-  .nav-panel .lang-group{ padding-top:14px; border-top:1px solid var(--glass-border); }
+  .nav-panel .nav-cta{ width:100%; margin-left:0; }
+  .nav-panel .lang-group{ padding:14px 0 22px; border-top:1px solid var(--glass-border); }
 
   .site-header.is-open .nav-panel{
     max-height:640px;
     opacity:1;
-    transform:translateY(0);
-    margin-top:18px;
-    padding-bottom:22px;
+    padding-top:6px;
+    padding-bottom:6px;
   }
 
   .hero{ padding:48px 0 40px; }
@@ -782,9 +785,6 @@ html[dir="rtl"] .cd-sep{ transform:translateY(-4px); }
 }
 
 @media (max-width: 480px){
-  header{
-    padding: 10px;
-  }
   .wrap{ padding:0 18px; }
   .services-grid{ grid-template-columns:1fr; }
   .why-grid{ grid-template-columns:1fr; }
