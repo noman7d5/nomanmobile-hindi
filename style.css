@@ -127,6 +127,15 @@ button{ font-family:inherit; }
   isolation:isolate;
 }
 
+/* ---------- elastic drag-stretch (see script.js) ---------- */
+/* Applied by JS to any element with class "elastic": .btn, .lang-chip,
+   .whatsapp-fab, .social-icon, .menu-toggle. While the finger/pointer is
+   down and moving, transitions are off so the shape tracks 1:1. On
+   release, a spring-style easing snaps it back with a slight overshoot. */
+.elastic{ will-change:transform; touch-action:none; }
+.elastic.is-grabbed{ transition:none; }
+.elastic.is-releasing{ transition:transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
 /* ---------- buttons ---------- */
 .btn{
   display:inline-flex;

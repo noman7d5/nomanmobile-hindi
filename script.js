@@ -1,5 +1,5 @@
 // =========================================================
-// नोमन मोबाइल रिपेयरिंग सेंटर — इंटरैक्शन (हिन्दी वर्शन)
+// Noman Mobile Repairing Centre — interactions
 // =========================================================
 
 // ---------- Mobile nav toggle ----------
@@ -75,12 +75,12 @@ document.getElementById('year').textContent = new Date().getFullYear();
   if(!deviceEl || !issueEl) return;
 
   const jobs = [
-    { device: 'iPhone 13',           issue: 'टूटी हुई स्क्रीन' },
-    { device: 'Samsung Galaxy S23',  issue: 'बैटरी जल्दी खत्म होना' },
-    { device: 'Redmi Note 12',       issue: 'चार्ज नहीं हो रहा' },
-    { device: 'OnePlus Nord',        issue: 'पानी से खराब' },
-    { device: 'Vivo Y-सीरीज़',       issue: 'स्पीकर काम नहीं कर रहा' },
-    { device: 'Oppo A-सीरीज़',       issue: 'लोगो स्क्रीन पर अटका हुआ' },
+    { device: 'iPhone 13',        issue: 'Cracked screen' },
+    { device: 'Samsung Galaxy S23', issue: 'Battery drains fast' },
+    { device: 'Redmi Note 12',    issue: 'Not charging' },
+    { device: 'OnePlus Nord',     issue: 'Water damage' },
+    { device: 'Vivo Y-series',    issue: 'Speaker not working' },
+    { device: 'Oppo A-series',    issue: 'Stuck on logo screen' },
   ];
 
   let jobIndex = 0;
@@ -119,3 +119,67 @@ document.getElementById('year').textContent = new Date().getFullYear();
     if(stepIndex === 0) swapJob();
   }, 1800);
 })();
+(function () {
+  const SELECTOR = '.btn, .lang-chip, .whatsapp-fab, .social-icon, .menu-toggle';
+  const MAX_DRAG    = 46;   // px of finger travel before the stretch maxes out
+  const MAX_STRETCH = 0.38; // elongation along the drag axis
+  const MAX_SQUEEZE = 0.20; // thinning on the perpendicular axis
+ 
+  document.querySelectorAll(SELECTOR).forEach(function (el) {
+    el.classList.add('elastic');
+ 
+    let startX = 0, startY = 0, dragging = false, raf = null;
+ 
+    function setTransform(dx, dy) {
+      const dist    = Math.min(Math.hypot(dx, dy), MAX_DRAG);
+      const ratio   = dist / MAX_DRAG;
+      const angle   = Math.atan2(dy, dx);
+      const stretch = 1 + ratio * MAX_STRETCH;
+      const squeeze = 1 - ratio * MAX_SQUEEZE;
+ 
+      el.style.transform =
+        'rotate(' + angle + 'rad) ' +
+        'scale(' + stretch + ', ' + squeeze + ') ' +
+        'rotate(' + (-angle) + 'rad)';
+    }
+ 
+    function onMove(e) {
+      if (!dragging) return;
+      const point = e.touches ? e.touches[0] : e;
+      const dx = point.clientX - startX;
+      const dy = point.clientY - startY;
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(function () { setTransform(dx, dy); });
+    }
+ 
+    function onDown(e) {
+      dragging = true;
+      const point = e.touches ? e.touches[0] : e;
+      startX = point.clientX;
+      startY = point.clientY;
+      el.classList.remove('is-releasing');
+      el.classList.add('is-grabbed');
+      el.style.transform = 'scale(0.97)'; // quick tactile press-down
+      window.addEventListener('pointermove', onMove);
+      window.addEventListener('touchmove', onMove, { passive: true });
+    }
+ 
+    function onUp() {
+      if (!dragging) return;
+      dragging = false;
+      if (raf) cancelAnimationFrame(raf);
+      el.classList.remove('is-grabbed');
+      el.classList.add('is-releasing');
+      el.style.transform = 'scale(1,1)';
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('touchmove', onMove);
+    }
+ 
+    el.addEventListener('pointerdown', onDown);
+    el.addEventListener('touchstart', onDown, { passive: true });
+    window.addEventListener('pointerup', onUp);
+    window.addEventListener('touchend', onUp);
+    window.addEventListener('touchcancel', onUp);
+  });
+})();
+ 
