@@ -736,6 +736,9 @@ html[dir="rtl"] .cd-sep{ transform:translateY(-4px); }
 }
 
 @media (max-width: 720px){
+  header{
+    padding-top: 14px;
+  }
   .header-wrap{ flex-wrap:wrap; }
   .brand{ order:0; }
   .menu-toggle{ display:flex; order:1; }
@@ -779,6 +782,9 @@ html[dir="rtl"] .cd-sep{ transform:translateY(-4px); }
 }
 
 @media (max-width: 480px){
+  header{
+    padding: 10px;
+  }
   .wrap{ padding:0 18px; }
   .services-grid{ grid-template-columns:1fr; }
   .why-grid{ grid-template-columns:1fr; }
